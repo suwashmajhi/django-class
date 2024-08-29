@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from django.contrib.auth.models import User
+from django.contrib.auth import authenticate
 
 # Create your views here.
 def login(request):
@@ -7,6 +8,24 @@ def login(request):
 
 def homepage(request):
     return render(request,'homepage.html')
+
+def login(request):
+    if request.method == 'POST':
+        username = request.POST['username']
+        print(username)
+        password = request.POST['password']
+        print(password)
+
+        user = authenticate(username = username, password = password)
+        if user is not None:
+            return render(request,'homepage.html')
+        else:
+            return render(request,'login.html',{'error': 'User or password in incorrect !!!'})
+        
+    
+
+    return render(request,'login.html')
+    
     
 def signup(request):
     if request.method == 'POST':
